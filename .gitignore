@@ -1,0 +1,11 @@
+# pi creates these in ~/.pi/agent/ — never want them committed even if accidentally copied here
+auth.json
+sessions/
+*-debug.log
+
+# editor + OS noise
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
