@@ -2,7 +2,7 @@
   "providers": {
     "ds4": {
       "name": "ds4.c local",
-      "baseUrl": "http://192.168.1.104:8000/v1",
+      "baseUrl": "http://192.168.1.105:8000/v1",
       "api": "openai-completions",
       "apiKey": "dsv4-local",
       "compat": {
