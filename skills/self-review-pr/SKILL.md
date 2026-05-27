@@ -24,35 +24,43 @@ If no PR number is given, default to the most recent PR you opened on the curren
    - Check edge cases (empty input, null, single element, fallback paths)
    - For any test you added: confirm it would fail without the fix. Run it against the prior commit if there's any doubt.
 
-3. **Breadth check — the most commonly missed step.** A bug pattern almost always exists in more than one place. Before deciding the PR is complete:
+3. **Plan-vs-execution check.** Reread the plan you wrote at the start of this task (the bullet list of "what I'll do" or "things to keep"). Diff that plan against your actual diff:
+   - Every item you said you'd KEEP should still appear in the new state.
+   - Every item you said you'd MOVE should appear in its new home, with no facts lost in transit.
+   - Every item you said you'd ADD should be in the diff.
+   - Every item you said you'd REMOVE should be gone.
+   - For prose edits specifically (SKILL.md, tool descriptions, docs): list the discrete facts in the old text and the discrete facts in the new text. Any fact in old-not-new must either appear elsewhere or be explicitly justified as obsolete. Drift between "what I planned" and "what I did" is the most common bug in prose refactors and is invisible to syntactic checks.
+
+4. **Breadth check — the most commonly missed step.** A bug pattern almost always exists in more than one place. Before deciding the PR is complete:
    - Identify the predicate or pattern your fix targets (e.g. `filter(t => t.category === 'domain')`, `await db.execute(insert(X))`, a specific error path).
    - Grep the codebase for that pattern. For each hit not in your diff, ask: *does the same bug exist here?*
    - For every hit that shares the bug: either include it in this PR, or write down explicitly why it is out of scope.
    - "I'll do it in a follow-up" is fine. Silent omission is not. Name every site you considered and chose not to touch.
 
-4. **Test coverage check.** For each modified source file:
+5. **Test coverage check.** For each modified source file:
    - Does a sibling test file exist (e.g. `ToolsPage.tsx` → `ToolsPage.test.tsx`)?
    - Did you add a test there for the new behavior?
    - If you modified two files and only tested one, the other is a gap. Either add a test or name the gap.
    - Do not dismiss with "uses the same logic, acceptable." Test gaps are gaps — name them, then decide.
 
-5. **Convention scan.** Read 50 lines of context around each diff hunk. Does anything in your diff diverge from the surrounding style (naming, imports, types, helper usage, error handling)? If something looks unusual, ask why.
+6. **Convention scan.** Read 50 lines of context around each diff hunk. Does anything in your diff diverge from the surrounding style (naming, imports, types, helper usage, error handling)? If something looks unusual, ask why.
 
-6. **PR hygiene.** Confirm:
+7. **PR hygiene.** Confirm:
    - PR template followed end to end (no skipped sections, no checkbox theater)
    - `Fixes #N` to auto-close the issue
    - Identification footer present per the global rule
    - Commit message follows conventional commit format
    - Commit has the `Co-Authored-By` trailer per the global rule
 
-7. **Write the verdict.** Use these headings, in this order:
+8. **Write the verdict.** Use these headings, in this order:
 
+   - **Plan drift** — items you said you'd keep/move/add/remove that didn't end up that way in the diff. If none, write "none."
    - **Completeness gaps** — breadth misses, missing tests, missing follow-up notes. If none, write "none."
    - **Bugs** — incorrect logic, edge cases not handled
    - **Convention concerns**
    - **PR hygiene**
    - **Conclusion** — one of:
-     - "Clean, ready to merge" (only if all four above are empty)
+     - "Clean, ready to merge" (only if all above are empty)
      - "Fix needed before merge: <list>"
      - "Land as-is, follow-up needed for: <list>"
 
