@@ -17,6 +17,8 @@ Cloned to `~/dotpi/` and symlinked into `~/.pi/agent/` via `install.sh`. Editing
 
 `SYSTEM.md` is deliberately not included; we want pi's defaults intact and only append to them.
 
+Setup tips, host tuning, and supervision workflow notes that aren't part of the live config live in [`notes/`](notes/).
+
 ## Install
 
 ```bash
