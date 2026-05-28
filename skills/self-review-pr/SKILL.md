@@ -43,7 +43,9 @@ If no PR number is given, default to the most recent PR you opened on the curren
    - If you modified two files and only tested one, the other is a gap. Either add a test or name the gap.
    - Do not dismiss with "uses the same logic, acceptable." Test gaps are gaps — name them, then decide.
 
-6. **Convention scan.** Read 50 lines of context around each diff hunk. Does anything in your diff diverge from the surrounding style (naming, imports, types, helper usage, error handling)? If something looks unusual, ask why.
+6. **Convention scan.** Two passes:
+   - **Local style.** Read 50 lines of context around each diff hunk. Does anything in your diff diverge from the surrounding style (naming, types, helper usage, error handling)? If something looks unusual, ask why.
+   - **Explicit project rules.** Re-read the project's `AGENTS.md` / `CLAUDE.md` (and any sibling rules files the diff touches, e.g. a frontend `AGENTS.md`). For each explicit rule you can match to your diff (import placement, type-annotation requirements, async patterns, conventional-commit format, PII rules, naming, etc.), verify the diff respects it. Local style only catches "looks weird next to neighbors"; explicit rules catch "violates a written rule even if the neighbors don't show it" (e.g. an inline import inside a try/except, where the surrounding lines are all `try:`/`except:` rather than imports).
 
 7. **PR hygiene.** Confirm:
    - PR template followed end to end (no skipped sections, no checkbox theater)
