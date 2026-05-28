@@ -4,6 +4,7 @@ Tips, tuning, and workflow writeups that don't belong in the live pi config but 
 
 | File | Topic |
 |---|---|
+| [ds4-server.md](ds4-server.md) | Launching and tuning the local ds4-server (context size, restart, flag reference) |
 | [headless-mac.md](headless-mac.md) | Tuning macOS to stop wasting CPU on a headless box that runs ds4-server (wallpaper, audio, docker VM) |
 | [supervision.md](supervision.md) | How we drive and monitor pi agents using [Agent of Empires](https://github.com/njbrake/agent-of-empires) |
 
