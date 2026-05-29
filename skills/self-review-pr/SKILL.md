@@ -47,22 +47,35 @@ If no PR number is given, default to the most recent PR you opened on the curren
    - **Local style.** Read 50 lines of context around each diff hunk. Does anything in your diff diverge from the surrounding style (naming, types, helper usage, error handling)? If something looks unusual, ask why.
    - **Explicit project rules.** Re-read the project's `AGENTS.md` / `CLAUDE.md` (and any sibling rules files the diff touches, e.g. a frontend `AGENTS.md`). For each explicit rule you can match to your diff (import placement, type-annotation requirements, async patterns, conventional-commit format, PII rules, naming, etc.), verify the diff respects it. Local style only catches "looks weird next to neighbors"; explicit rules catch "violates a written rule even if the neighbors don't show it" (e.g. an inline import inside a try/except, where the surrounding lines are all `try:`/`except:` rather than imports).
 
-7. **PR hygiene.** Confirm:
-   - PR template followed end to end (no skipped sections, no checkbox theater)
+7. **Mergeability check.** Diff-clean is not merge-ready. Before any "ready to merge" verdict, run:
+
+   ```bash
+   gh pr view <N> --json mergeable,mergeStateStatus,statusCheckRollup
+   ```
+
+   - `mergeable` must be `MERGEABLE`. `CONFLICTING` means GitHub cannot merge this even if you click the button. Rebase on latest `origin/main` (or the PR's base branch), resolve conflicts, force-push, then re-run this check.
+   - `statusCheckRollup` should not be empty when CI is configured on this repo. An empty array typically means CI never fired (e.g. conflicts blocked it, or a `GITHUB_TOKEN`-opened PR suppressed downstream workflows). Cause must be diagnosed before declaring done.
+   - Any check with `conclusion: FAILURE` is a blocker. `IN_PROGRESS` means wait; do not call the PR ready until checks complete.
+
+   This step exists because diff-only review hides the operational state. A PR can have a perfect diff and still be unmergeable.
+
+8. **PR hygiene.** Confirm:
+   - PR template followed end to end. Every `[ ]` checkbox must be either checked, or replaced with `[ ] N/A (reason)`. Every `(describe how)` / `(...)` placeholder must be filled in. "Filled with `Fixes #N`" is not enough.
    - `Fixes #N` to auto-close the issue
    - Identification footer present per the global rule
    - Commit message follows conventional commit format
    - Commit has the `Co-Authored-By` trailer per the global rule
 
-8. **Write the verdict.** Use these headings, in this order:
+9. **Write the verdict.** Use these headings, in this order:
 
    - **Plan drift** — items you said you'd keep/move/add/remove that didn't end up that way in the diff. If none, write "none."
    - **Completeness gaps** — breadth misses, missing tests, missing follow-up notes. If none, write "none."
    - **Bugs** — incorrect logic, edge cases not handled
    - **Convention concerns**
+   - **Mergeability** — current `mergeable` / `mergeStateStatus` / CI summary from step 7. Quote the values; do not paraphrase.
    - **PR hygiene**
    - **Conclusion** — one of:
-     - "Clean, ready to merge" (only if all above are empty)
+     - "Clean, ready to merge" (only if all above are empty AND step 7 returned `mergeable: MERGEABLE` with all required checks green)
      - "Fix needed before merge: <list>"
      - "Land as-is, follow-up needed for: <list>"
 
