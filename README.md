@@ -19,6 +19,10 @@ Cloned to `~/dotpi/` and symlinked into `~/.pi/agent/` via `install.sh`. Editing
 
 Setup tips, host tuning, and supervision workflow notes that aren't part of the live config live in [`notes/`](notes/).
 
+## Monitoring
+
+Pi agents are driven and monitored from a separate orchestrator session using [Agent of Empires](https://github.com/agent-of-empires/agent-of-empires) (`aoe`), which manages each task as a tmux + Docker sandbox with its own pi process and git worktree. The orchestrator polls `aoe session capture` for state transitions and intervenes only on destructive actions or hard failure. See [`notes/supervision.md`](notes/supervision.md) for the full topology and failure modes.
+
 ## Install
 
 ```bash

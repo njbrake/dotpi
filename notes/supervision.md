@@ -1,6 +1,6 @@
 # Supervising pi agents with Agent of Empires
 
-We do not let pi (driving DeepSeek V4 Flash via ds4-server) run unsupervised. Instead, an orchestrating agent watches the work, sends corrective steering when needed, and validates closing actions. [Agent of Empires](https://github.com/njbrake/agent-of-empires) (`aoe`) is the connective tissue.
+We do not let pi (driving DeepSeek V4 Flash via ds4-server) run unsupervised. Instead, an orchestrating agent watches the work, sends corrective steering when needed, and validates closing actions. [Agent of Empires](https://github.com/agent-of-empires/agent-of-empires) (`aoe`) is the connective tissue.
 
 ## Topology
 
@@ -60,7 +60,7 @@ aoe sandboxes are Docker containers based on `ghcr.io/njbrake/aoe-dev-sandbox`. 
 - Mounts `~/.pi/sandbox/` at `/root/.pi` so pi config is shared across sandboxes
 - Has its own `node_modules`, `.venv`, and `target` as ephemeral docker volumes (survive restarts, do not pollute the host)
 
-See [agent-of-empires](https://github.com/njbrake/agent-of-empires) for the full config schema, profile management, and hooks.
+See [agent-of-empires](https://github.com/agent-of-empires/agent-of-empires) for the full config schema, profile management, and hooks.
 
 ## When supervision can wind down
 
