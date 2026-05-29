@@ -40,7 +40,7 @@ Each task gets its own aoe session, which means its own tmux pane, its own docke
 ## The supervision loop
 
 1. **Orchestrator delegates** a bounded task to a specific aoe session via `aoe send`. The prompt is self-contained: issue number, repo, constraints, which skill to use.
-2. **Orchestrator monitors** with a `Monitor`-tool script that polls `aoe session capture` for state transitions (working / idle). Polling interval is 30-45 s; the orchestrator does not watch the screen frame by frame.
+2. **Orchestrator monitors** with a `Monitor`-tool script that polls `aoe session capture` for state transitions (working / idle). Polling interval is 30-45 s; the orchestrator does not watch the screen frame by frame. See [`monitor.md`](monitor.md) for the polling template, regex bundles, and false-positive gotchas.
 3. **Orchestrator intervenes only when necessary** — silent failures, context budget approaching exhaustion, the agent confidently going down the wrong path. Otherwise let the agent work.
 4. **Orchestrator reviews** the agent's output before any GitHub-visible closing action.
 5. **The agent closes its own loop.** Merging, pushing, posting comments — these are the delegated agent's responsibility, not the orchestrator's. (See `feedback-delegate-full-loop-to-deepseek` in the orchestrator's memory.)
