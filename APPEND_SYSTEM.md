@@ -37,3 +37,9 @@ Applies to anything you write that lands in GitHub. Not to local-only artifacts 
 ## Shell commands stay on one line
 
 When you emit a bash tool call, keep the command on a single line. Use `&&` to chain steps rather than literal newlines. Multi-line shell strings inside DSML parameters parse as raw text instead of as a tool call, and the turn silently no-ops.
+
+## Git and GitHub operations
+
+- **Never `gh pr merge --admin`.** It bypasses branch protection. If a merge is blocked, diagnose the failing check and fix the underlying issue, don't escalate to admin override.
+- **Default to plain `git rebase origin/main` from the feature branch.** `git rebase --onto X Y branch` silently drops commits if `Y` is wrong. Only reach for `--onto` when you can articulate what each of the three args does and have a reason to use it.
+- **`gh pr merge --auto` reporting `fatal: Not possible to fast-forward` is usually a false alarm.** The server-side merge often succeeded before the local fast-forward attempt failed on dirty working state. Verify with `gh pr view <N> --json mergedAt` before treating it as a failure.
